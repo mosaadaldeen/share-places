@@ -29,9 +29,26 @@ export default function Auth(props) {
     false
   );
 
-  const authSubmitHandler = (event) => {
+  const authSubmitHandler = async (event) => {
     event.preventDefault();
-    console.log(formState.inputs);
+    if (isLoginMode) {
+    } else {
+      try {
+        const response = await fetch("http://localhost:5000/api/users/signup", {
+          method: "METHOD",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: formState.inputs.name.value,
+            email: formState.inputs.email.value,
+            password: formState.inputs.password.value,
+          }),
+        });
+        const responseData = await response.json();
+        console.log(responseData);
+      } catch (error) {}
+    }
     auth.login();
   };
 
@@ -86,8 +103,8 @@ export default function Auth(props) {
           id="password"
           type="password"
           label="Password"
-          validators={[VALIDATOR_MINLENGTH(5)]}
-          errorText="please enter a valid email address"
+          validators={[VALIDATOR_MINLENGTH(6)]}
+          errorText="please enter a valid password"
           onInput={inputHandler}
         />
         <Button type="submit" disabled={!formState.isValid}>
