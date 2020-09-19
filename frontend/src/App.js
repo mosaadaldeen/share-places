@@ -1,31 +1,27 @@
-import React, { useState, useCallback } from "react";
+import React, { lazy, Suspense } from "react";
 import {
   BrowserRouter as Router,
   Route,
   Redirect,
   Switch,
 } from "react-router-dom";
-import Users from "./user/pages/Users";
-import NewPlace from "./places/pages/NewPlace";
+import LoadingSpinner from "./shared/components/UIElements/LoadingSpinner";
 import MainNavigation from "./shared/components/Navigation/MainNavigation";
-import UserPlaces from "./places/pages/UserPlaces";
-import UpdatePlace from "./places/pages/UpdatePlace";
-import Auth from "./user/pages/Auth";
 import { AuthContext } from "./shared/context/auth_context";
+import { useAuth } from "./shared/hooks/auth-hook";
+
+const Users = lazy(() => import("./user/pages/Users"));
+const NewPlace = lazy(() => import("./places/pages/NewPlace"));
+const UserPlaces = lazy(() => import("./places/pages/UserPlaces"));
+const UpdatePlace = lazy(() => import("./places/pages/UpdatePlace"));
+const Auth = lazy(() => import("./user/pages/Auth"));
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const login = useCallback(() => {
-    setIsLoggedIn(true);
-  }, []);
-
-  const logout = useCallback(() => {
-    setIsLoggedIn(false);
-  }, []);
+  const { token, login, logout, userId } = useAuth();
 
   let routes;
 
-  if (isLoggedIn) {
+  if (token) {
     routes = (
       <Switch>
         <Route path="/places/new" exact component={NewPlace} />
@@ -48,11 +44,27 @@ function App() {
 
   return (
     <AuthContext.Provider
-      value={{ isLoggedIn: isLoggedIn, login: login, logout: logout }}
+      value={{
+        isLoggedIn: !!token,
+        token: token,
+        userId: userId,
+        login: login,
+        logout: logout,
+      }}
     >
       <Router>
         <MainNavigation />
-        <main>{routes} </main>
+        <main>
+          <Suspense
+            fallback={
+              <div className="center">
+                <LoadingSpinner />
+              </div>
+            }
+          >
+            {routes}
+          </Suspense>
+        </main>
       </Router>
     </AuthContext.Provider>
   );

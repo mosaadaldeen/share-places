@@ -1,15 +1,25 @@
 import React, { useRef, useEffect } from "react";
+
 import "./Map.css";
 
-export default function Map(props) {
+const Map = (props) => {
   const mapRef = useRef();
+
   const { center, zoom } = props;
+
   useEffect(() => {
-    const map = new window.google.maps.Map(mapRef.current, {
-      center: center,
-      zoom: zoom,
+    new window.ol.Map({
+      target: mapRef.current.id,
+      layers: [
+        new window.ol.layer.Tile({
+          source: new window.ol.source.OSM(),
+        }),
+      ],
+      view: new window.ol.View({
+        center: window.ol.proj.fromLonLat([center.lng, center.lat]),
+        zoom: zoom,
+      }),
     });
-    new window.google.maps.Marker({ position: center, map: map });
   }, [center, zoom]);
 
   return (
@@ -20,6 +30,6 @@ export default function Map(props) {
       id="map"
     ></div>
   );
-}
+};
 
-// AIzaSyAFxiDXf1Vehu_K9kHmM9KIGwwFrMKQG5E
+export default Map;

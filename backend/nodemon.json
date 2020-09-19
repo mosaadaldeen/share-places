@@ -1,0 +1,9 @@
+{
+  "env": {
+    "DB_USER": "Mohammad",
+    "DB_PASSWORD": "Mohammad",
+    "DB_NAME": "places",
+    "GOOGLE_API_KEY": "pk.eyJ1Ijoia21qc2QiLCJhIjoiY2s1NThnamh6MDNvYTNubjFxcmZyY2o0YSJ9.VJV0sR7vnSaaEhDIJ1KhjA",
+    "JWT_KEY": "supersecret_dont_share"
+  }
+}
