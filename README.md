@@ -16,13 +16,16 @@ A wep app built using the MERN stack to share places with others, where you can 
 git clone https://github.com/mosaadaldeen/share-places.git
 ```
 To run the backend: 
-Open the terminal => cd backend => npm install 
+Open the terminal => cd backend => npm install <br>
+
 then to run the server: 
 ```
 npm run server
 ```
+
 To run the frontend: 
-Open another window in the terminal => cd frontend => npm install 
+Open another window in the terminal => cd frontend => npm install  <br>
+
 then to run the frontend: 
 ```
 npm start
